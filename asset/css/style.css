@@ -1,0 +1,478 @@
+/* ==========================================
+   1. IMPORTACIÓN DE FUENTES Y VARIABLES
+   ========================================== */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --bg-color: #f4f7fc;         /* Gris azulado muy suave de fondo */
+    --card-bg: #ffffff;          /* Blanco puro para las tarjetas */
+    --text-main: #1e2538;        /* Azul oscuro/grisáceo casi negro */
+    --text-muted: #8a94a6;       /* Gris para textos secundarios */
+    --accent-blue: #0d6efd;      /* Azul vibrante del diseño */
+    --accent-light: #eef4ff;     /* Azul muy claro para fondos de badges */
+    
+    /* Sombras extremadamente suaves y difuminadas */
+    --card-shadow: 0 20px 40px -15px rgba(22, 34, 80, 0.05);
+    --hover-shadow: 0 30px 50px -10px rgba(22, 34, 80, 0.08);
+}
+
+/* ==========================================
+   2. ESTILOS GENERALES Y RESET
+   ========================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2rem 1rem;
+}
+
+.dashboard-container {
+    width: 100%;
+    max-width: 1120px;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* Tarjeta Base */
+.card {
+    background: var(--card-bg);
+    border-radius: 28px;
+    padding: 2rem;
+    box-shadow: var(--card-shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--hover-shadow);
+}
+
+/* ==========================================
+   3. HEADER / BARRA DE BÚSQUEDA
+   ========================================== */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.search-box {
+    background: var(--card-bg);
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    box-shadow: var(--card-shadow);
+    width: 100%;
+    max-width: 350px;
+}
+
+.search-box input {
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 0.95rem;
+    color: var(--text-main);
+}
+
+.search-box input::placeholder {
+    color: var(--text-muted);
+}
+
+.search-icon {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+}
+
+.date-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: var(--text-main);
+    font-weight: 500;
+}
+
+.notification-btn {
+    background: var(--card-bg);
+    border: none;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: var(--card-shadow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: background 0.2s;
+}
+
+.notification-btn:hover {
+    background: var(--accent-light);
+}
+
+/* ==========================================
+   4. SECCIÓN SUPERIOR (Clima actual + Detalle derecho)
+   ========================================== */
+.top-section {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 1.5rem;
+}
+
+@media (max-width: 768px) {
+    .top-section {
+        grid-template-columns: 1fr;
+    }
+}
+
+.right-subgrid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Tarjeta Clima Principal */
+.card-main-weather {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+}
+
+.location-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.location-info .geo-icon {
+    color: var(--accent-blue);
+}
+
+.rain-chance {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-top: 0.3rem;
+}
+
+.weather-focus {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 2rem 0;
+}
+
+.main-temp {
+    font-size: 5.5rem;
+    font-weight: 700;
+    color: var(--accent-blue);
+    line-height: 1;
+}
+
+.big-weather-icon {
+    width: 140px;
+    height: auto;
+}
+
+.weather-desc {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+/* Tarjeta Calidad de Aire */
+.card-air-quality {
+    padding: 1.5rem;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.card-header h3 {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+}
+
+.badge {
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.badge-healthy {
+    background-color: #e6f9f0;
+    color: #10b981;
+}
+
+.air-quality-body {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+/* Círculo indicador de AQI */
+.aqi-circle {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: 6px solid var(--accent-light);
+    border-top-color: var(--accent-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+.aqi-text h4 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 0.2rem;
+}
+
+.aqi-text p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* Tarjeta Pronóstico de Mañana */
+.card-tomorrow {
+    padding: 1.5rem;
+}
+
+.card-tomorrow h3 {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+}
+
+.tomorrow-body {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.tomorrow-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.weather-icon-small {
+    font-size: 2rem;
+}
+
+.tomorrow-day {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.tomorrow-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.tomorrow-temps {
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+/* ==========================================
+   5. SECCIÓN PRONÓSTICO 7 DÍAS
+   ========================================== */
+.section-title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.section-title-container h2 {
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.view-all-link {
+    color: var(--accent-blue);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+.forecast-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.8rem;
+}
+
+@media (max-width: 768px) {
+    .forecast-grid {
+        grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+    }
+}
+
+.forecast-item {
+    background: var(--card-bg);
+    border-radius: 24px;
+    padding: 1.2rem 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    box-shadow: var(--card-shadow);
+    transition: all 0.3s;
+}
+
+.forecast-item.active {
+    background-color: var(--accent-light);
+    border: 2px solid var(--accent-blue);
+}
+
+.day-name {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-muted);
+}
+
+.forecast-item.active .day-name {
+    color: var(--accent-blue);
+}
+
+.forecast-icon {
+    font-size: 1.8rem;
+}
+
+.temp-max {
+    font-weight: 700;
+    font-size: 1.05rem;
+}
+
+.temp-min {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+/* ==========================================
+   6. SECCIÓN DESTACADOS DE HOY (Highlights)
+   ========================================== */
+.highlights-section {
+    margin-top: 1rem;
+}
+
+.highlights-section h2 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+}
+
+.highlights-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+}
+
+@media (max-width: 900px) {
+    .highlights-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+@media (max-width: 480px) {
+    .highlights-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.highlight-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 180px;
+}
+
+.highlight-card h3 {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+}
+
+/* Estilos internos de las métricas */
+.uv-display, .wind-display, .humidity-display {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.uv-value, .wind-speed, .humidity-val {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.uv-status, .wind-direction, .dew-point {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* Ajuste del contenedor de amanecer/atardecer */
+.sun-times {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    font-size: 0.95rem;
+}
+
+.sun-times p {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 500;
+}
+
+.sun-times span {
+    font-weight: 700;
+}
+
+/* Slider de progreso de humedad */
+.progress-bar-container {
+    background: var(--accent-light);
+    border-radius: 10px;
+    height: 8px;
+    width: 100%;
+    position: relative;
+    margin-top: 0.5rem;
+    overflow: hidden;
+}
+
+.progress-fill {
+    background: var(--accent-blue);
+    height: 100%;
+    width: 45%; /* Se controlará dinámicamente con JS */
+    border-radius: 10px;
+}

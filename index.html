@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Dashboard</title>
+    <link rel="stylesheet" href="/asset/css/style.css">
+</head>
+<body>
+
+    <div class="dashboard-container">
+        
+        <header class="header">
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="search-input" placeholder="Buscar Ciudad...">
+            </div>
+            <div class="date-container">
+                <span id="current-date">Martes, 24 Mayo</span>
+                <button class="notification-btn">🔔</button>
+            </div>
+        </header>
+
+        <section class="top-section">
+            
+            <div class="card card-main-weather">
+                <div class="location-info">
+                    <span class="geo-icon">📍</span>
+                    <span id="location-name">Barcelona, Spain</span>
+                </div>
+                <p class="rain-chance">Chance of rain: <span id="rain-percent">0%</span></p>
+                <div class="weather-focus">
+                    <h1 class="main-temp"><span id="temp-value">24</span>°C</h1>
+                    <img id="main-weather-icon" src="" alt="Weather Icon" class="big-weather-icon">
+                </div>
+                <p id="weather-description" class="weather-desc">Sunny with light clouds</p>
+            </div>
+
+            <div class="card card-air-quality">
+                <div class="card-header">
+                    <h3>Air Quality</h3>
+                    <span class="badge badge-healthy">Healthy</span>
+                </div>
+                <div class="air-quality-body">
+                    <div class="aqi-circle">
+                        <span id="aqi-value">50</span>
+                    </div>
+                    <div class="aqi-text">
+                        <h4>Good</h4>
+                        <p>Low risk for sensitive groups.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card card-tomorrow">
+                <h3>Tomorrow's Forecast</h3>
+                <div class="tomorrow-body">
+                    <span class="weather-icon-small">⛅</span>
+                    <div>
+                        <p class="tomorrow-day">Thu, 25 May</p>
+                        <p class="tomorrow-desc">Partly Cloudy</p>
+                    </div>
+                    <span class="tomorrow-temps">22° / 16°</span>
+                </div>
+            </div>
+
+        </section>
+
+        <section class="forecast-section">
+            <div class="section-title-container">
+                <h2>7-Day Forecast</h2>
+                <a href="#" class="view-all-link">View Full</a>
+            </div>
+            <div class="forecast-grid" id="forecast-container">
+                <div class="forecast-item active">
+                    <span class="day-name">MON</span>
+                    <span class="forecast-icon">☀️</span>
+                    <span class="temp-max">24°</span>
+                    <span class="temp-min">14°</span>
+                </div>
+                </div>
+        </section>
+
+        <section class="highlights-section">
+            <h2>Today's Highlights</h2>
+            <div class="highlights-grid">
+                
+                <div class="card highlight-card">
+                    <h3>UV Index</h3>
+                    <div class="uv-display">
+                        <span class="uv-value">4</span>
+                        <span class="uv-status">Moderate</span>
+                    </div>
+                </div>
+
+                <div class="card highlight-card">
+                    <h3>Wind Status</h3>
+                    <div class="wind-display">
+                        <span class="wind-speed"><span id="wind-val">12</span> km/h</span>
+                        <span class="wind-direction">🧭 WSW</span>
+                    </div>
+                </div>
+
+                <div class="card highlight-card">
+                    <h3>Sunrise & Sunset</h3>
+                    <div class="sun-times">
+                        <p>☀️ Sunrise: <span id="sunrise-time">06:12 AM</span></p>
+                        <p>🌙 Sunset: <span id="sunset-time">08:45 PM</span></p>
+                    </div>
+                </div>
+
+                <div class="card highlight-card">
+                    <h3>Humidity</h3>
+                    <div class="humidity-display">
+                        <span class="humidity-val"><span id="humidity-percent">45</span>%</span>
+                        <p class="dew-point">The dew point is 15° right now.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
