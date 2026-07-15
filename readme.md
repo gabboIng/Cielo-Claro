@@ -1,4 +1,4 @@
-# Weather Dashboard (Clima + Calidad del Aire)
+# Cielo Claro 
 
 Proyecto web que muestra el clima actual, pronóstico a 5 días, y algunos “highlights” (humedad, viento, amanecer/atardecer y calidad del aire) usando la API de **OpenWeather**.
 
