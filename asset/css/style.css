@@ -1,7 +1,7 @@
 /* ==========================================
    1. IMPORTACIÓN DE FUENTES Y VARIABLES
    ========================================== */
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
 :root {
     --bg-color: #f4f7fc;         /* Gris azulado muy suave de fondo */
@@ -23,7 +23,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Montserrat', sans-serif;
 }
 
 body {
@@ -118,7 +118,7 @@ body {
     align-items: center;
     justify-content: center;
     font-size: 1.2rem;
-    transition: background 0.2s;
+    transition: 0.2s;
 }
 
 .notification-btn:hover {
@@ -327,9 +327,10 @@ body {
 }
 
 .forecast-grid {
-    display: grid;
+    display: flex;
+    justify-content: space-between;
     grid-template-columns: repeat(7, 1fr);
-    gap: 0.8rem;
+    gap: 1rem;
 }
 
 @media (max-width: 768px) {
@@ -348,6 +349,8 @@ body {
     gap: 0.6rem;
     box-shadow: var(--card-shadow);
     transition: all 0.3s;
+    flex: 1;
+    min-width: 0;
 }
 
 .forecast-item.active {
