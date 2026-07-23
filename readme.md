@@ -138,6 +138,6 @@ El diseño se adapta a:
 
 ## 👤 Autor
 
-**Tu nombre** — [GitHub](https://github.com/tu-usuario)
+**gabboIng** — [GitHub](https://github.com/gabboIng)
 
 ---
