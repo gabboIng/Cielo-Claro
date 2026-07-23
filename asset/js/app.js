@@ -95,8 +95,7 @@ function updateUI(current, forecast, air) {
 
     // Viento (m/s → km/h) + dirección
     windVal.textContent = Math.round(current.wind.speed * 3.6);
-    if (windDirection) windDirection.textContent = `🧭 ${getWindDirection(current.wind.deg)}`;
-
+    if (windDirection) windDirection.innerHTML = `<i class='bx bx-compass'></i> ${getWindDirection(current.wind.deg)}`;
     // Probabilidad de lluvia (del pronóstico de hoy a las 12:00)
     const todayRain = forecast.list.find(item => item.dt_txt.includes("12:00:00"));
     if (rainPercent && todayRain) rainPercent.textContent = `${Math.round(todayRain.pop * 100)}%`;

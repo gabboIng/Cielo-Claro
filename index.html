@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="https://openweathermap.org/themes/openweathermap/assets/vendor/owm/img/widgets/03d.png">
+    <link href="https://cdn.boxicons.com/3.0.8/fonts/basic/boxicons.min.css" rel="stylesheet">
     <title>Cielo claro</title>
     <link rel="stylesheet" href="/asset/css/style.css">
 </head>
@@ -17,7 +18,7 @@
                 <span class="greeting">¡Hola! Bienvenido a ver el clima.</span>
             </div>
             <div class="search-box">
-                <span class="search-icon">🔍</span>
+                <span class='bx bx-search search-icon'></span>
                 <input type="text" id="search-input" placeholder="Buscar Ciudad...">
             </div>
             <div class="date-container">
@@ -30,7 +31,7 @@
 
             <div class="card card-main-weather">
                 <div class="location-info">
-                    <span class="geo-icon">📍</span>
+                    <span class="bx bx-location-plus geo-icon"></span>
                     <span id="location-name"></span>
                 </div>
                 <p class="rain-chance">--Probabilidad de lluvia-- <span id="rain-percent">0%</span></p>
@@ -83,7 +84,7 @@
             <div class="forecast-grid" id="forecast-container">
                 <div class="forecast-item active">
                     <span class="day-name">MON</span>
-                    <span class="forecast-icon">☀️</span>
+                    <span class=""></span>
                     <span class="temp-max">24°</span>
                     <span class="temp-min">14°</span>
                 </div>
@@ -107,15 +108,15 @@
                     <h3>estado del viento</h3>
                     <div class="wind-display">
                         <span class="wind-speed"><span id="wind-val"></span> km/h</span>
-                        <span class="wind-direction" id="wind-direction">🧭 </span>
+                        <span class="wind-direction" id="wind-direction"><i class='bx bx-compass'></i> </span>
                     </div>
                 </div>
 
                 <div class="card highlight-card">
                     <h3>amanecer y atardecer</h3>
                     <div class="sun-times">
-                        <p>☀️ Amanecer: <span id="sunrise-time"></span></p>
-                        <p>🌙 Atardecer: <span id="sunset-time"></span></p>
+                        <p><i class='bx bx-sun'></i> Amanecer: <span id="sunrise-time"></span></p>
+                        <p><i class='bx bx-moon'></i> Atardecer: <span id="sunset-time"></span></p>
                     </div>
                 </div>
                 <div class="card highlight-card">

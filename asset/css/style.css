@@ -483,3 +483,23 @@ body {
     width: 45%; /* Se controlará dinámicamente con JS */
     border-radius: 10px;
 }
+
+
+/* Estilos para iconos Boxicons */
+.bx {
+    font-size: 1.5rem;
+}
+
+.search-icon {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+}
+
+.geo-icon {
+    color: var(--accent-blue);
+    font-size: 1.6rem;
+}
+
+.forecast-icon {
+    font-size: 1.8rem;
+}
