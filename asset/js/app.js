@@ -14,6 +14,9 @@ const windDirection = document.getElementById("wind-direction");
 const sunriseTime = document.getElementById("sunrise-time");
 const sunsetTime = document.getElementById("sunset-time");
 const currentDateSpan = document.getElementById("current-date");
+const pressureValue = document.getElementById("pressure-value");
+const pressureStatus = document.getElementById("pressure-status");
+const pressureDesc = document.getElementById("pressure-desc");
 const aqiValue = document.getElementById("aqi-value");
 const rainPercent = document.getElementById("rain-percent");
 const dewPointEl = document.getElementById("dew-point");
@@ -102,6 +105,11 @@ function updateUI(current, forecast, air) {
     sunriseTime.textContent = formatUnixTime(current.sys.sunrise, current.timezone);
     sunsetTime.textContent = formatUnixTime(current.sys.sunset, current.timezone);
 
+    // Presión atmosférica
+    pressureValue.textContent = current.main.pressure;
+    pressureStatus.textContent = "hPa";
+    pressureDesc.textContent = getPressureDescription(current.main.pressure);
+
     // Calidad del aire
     const aqi = air.list[0].main.aqi;
     aqiValue.textContent = aqi * 20;
@@ -124,10 +132,26 @@ function formatUnixTime(unixTimestamp, timezoneOffset) {
     return `${hours}:${minutes} ${ampm}`;
 }
 
-// ========== GRADOS A DIRECCIÓN DEL VIENTE ==========
+// ========== GRADOS A DIRECCIÓN DEL VIENTO ==========
 function getWindDirection(degrees) {
-    const directions = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE',
-                        'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
+    const directions = [
+            "Norte", 
+            "Norte-Noreste", 
+            "Noreste", 
+            "Este-Noreste", 
+            "Este", 
+            "Este-Sureste", 
+            "Sureste", 
+            "Sur-Sureste",
+            "Sur", 
+            "Sur-Suroeste", 
+            "Suroeste", 
+            "Oeste-Suroeste", 
+            "Oeste", 
+            "Oeste-Noroeste", 
+            "Noroeste", 
+            "Norte-Noroeste"
+        ];
     const index = Math.round(degrees / 22.5) % 16;
     return directions[index];
 }
@@ -138,6 +162,13 @@ function calculateDewPoint(temp, humidity) {
     const b = 237.7;
     const alpha = (a * temp) / (b + temp) + Math.log(humidity / 100);
     return (b * alpha) / (a - alpha);
+}
+
+// ========== DESCRIPCIÓN DE LA PRESIÓN ==========
+function getPressureDescription(pressure) {
+    if (pressure < 1000) return "Baja presión (posible mal tiempo)";
+    if (pressure >= 1000 && pressure <= 1020) return "Presión normal";
+    return "Alta presión (posible buen tiempo)";
 }
 
 // ========== TARJETA CALIDAD DEL AIRE ==========
