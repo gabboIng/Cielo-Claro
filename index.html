@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather Dashboard</title>
+    <link rel="icon" type="image/png" href="https://openweathermap.org/themes/openweathermap/assets/vendor/owm/img/widgets/03d.png">
+    <title>Cielo claro</title>
     <link rel="stylesheet" href="/asset/css/style.css">
 </head>
 <body>
@@ -11,13 +12,17 @@
     <div class="dashboard-container">
         
         <header class="header">
+            <div>
+                <h1 class="app-title">Cielo claro</h1>
+                <span class="greeting">¡Hola! Bienvenido a ver el clima.</span>
+            </div>
             <div class="search-box">
                 <span class="search-icon">🔍</span>
                 <input type="text" id="search-input" placeholder="Buscar Ciudad...">
             </div>
             <div class="date-container">
                 <span id="current-date"></span>
-                <button class="notification-btn">🔔</button>
+                
             </div>
         </header>
 
@@ -40,30 +45,30 @@
                 <div class="card card-air-quality">
                     <div class="card-header">
                         <h3>Calidad del aire</h3>
-                        <span class="badge badge-healthy">Bueno</span>
+                        <span class="badge badge-healthy" id="aqi-badge">Bueno</span>
                     </div>
                     <div class="air-quality-body">
                         <div class="aqi-circle">
                             <span id="aqi-value">50</span>
                         </div>
                         <div class="aqi-text">
-                            <h4></h4>
-                            <p>Low risk for sensitive groups.</p>
+                            <h4 id="aqi-text-title">Bueno</h4>
+                            <p id="aqi-text-desc">Low risk for sensitive groups.</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="card card-tomorrow">
-                    <h3>Tomorrow's Forecast</h3>
+                    <h3>Pronóstico de mañana</h3>
                     <div class="tomorrow-body">
                         <div class="tomorrow-info">
-                            <span class="weather-icon-small">⛅</span>
+                            <img id="tomorrow-icon" src="https://openweathermap.org/img/wn/02d.png" alt="Weather Icon" style="width: 50px; height: 50px;">
                             <div>
-                                <p class="tomorrow-day">Thu, 25 May</p>
-                                <p class="tomorrow-desc">Partly Cloudy</p>
+                                <p class="tomorrow-day" id="tomorrow-day">--</p>
+                                <p class="tomorrow-desc" id="tomorrow-desc">--</p>
                             </div>
                         </div>
-                        <span class="tomorrow-temps">22° / 16°</span>
+                        <span class="tomorrow-temps" id="tomorrow-temps">--° / --°</span>
                     </div>
                 </div>
             </div>
@@ -92,8 +97,9 @@
                 <div class="card highlight-card">
                     <h3>UV Index</h3>
                     <div class="uv-display">
-                        <span class="uv-value">4</span>
-                        <span class="uv-status">Moderate</span>
+                        <span class="uv-value" id="uv-value">--</span>
+                        <span class="uv-status" id="uv-status">No disponible</span>
+                        <span class="dew-point" style="font-size: 0.75rem;">Requiere API One Call 3.0 (pago)</span>
                     </div>
                 </div>
 
@@ -101,7 +107,7 @@
                     <h3>Wind Status</h3>
                     <div class="wind-display">
                         <span class="wind-speed"><span id="wind-val">12</span> km/h</span>
-                        <span class="wind-direction">🧭 WSW</span>
+                        <span class="wind-direction" id="wind-direction">🧭 --</span>
                     </div>
                 </div>
 
@@ -119,7 +125,7 @@
                         <div class="progress-bar-container">
                             <div class="progress-fill" id="humidity-bar" style="width: 45%;"></div>
                         </div>
-                        <p class="dew-point" style="margin-top: 0.4rem;">The dew point is 15° right now.</p>
+                        <p class="dew-point" id="dew-point" style="margin-top: 0.4rem;">Punto de rocío: --°</p>
                     </div>
                 </div>
 

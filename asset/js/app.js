@@ -1,6 +1,7 @@
-const API_KEY = "4c0b6f3ba89ae65e0c4da57ab93a6c15"; 
+const API_KEY = "4c0b6f3ba89ae65e0c4da57ab93a6c15";
 const BASE_URL = "https://api.openweathermap.org";
 
+// ========== REFERENCIAS AL DOM ==========
 const searchInput = document.getElementById("search-input");
 const locationName = document.getElementById("location-name");
 const tempValue = document.getElementById("temp-value");
@@ -9,16 +10,23 @@ const mainWeatherIcon = document.getElementById("main-weather-icon");
 const humidityPercent = document.getElementById("humidity-percent");
 const humidityBar = document.getElementById("humidity-bar");
 const windVal = document.getElementById("wind-val");
+const windDirection = document.getElementById("wind-direction");
 const sunriseTime = document.getElementById("sunrise-time");
 const sunsetTime = document.getElementById("sunset-time");
 const currentDateSpan = document.getElementById("current-date");
 const aqiValue = document.getElementById("aqi-value");
+const rainPercent = document.getElementById("rain-percent");
+const dewPointEl = document.getElementById("dew-point");
+const tomorrowDay = document.getElementById("tomorrow-day");
+const tomorrowDesc = document.getElementById("tomorrow-desc");
+const tomorrowTemps = document.getElementById("tomorrow-temps");
+const tomorrowIcon = document.getElementById("tomorrow-icon");
 
-// Fecha de hoy
+// ========== FECHA ACTUAL ==========
 const options = { weekday: 'long', day: 'numeric', month: 'long' };
 currentDateSpan.textContent = new Date().toLocaleDateString('es-ES', options);
 
-// Escuchar Enter en el buscador
+// ========== BUSCADOR ==========
 searchInput.addEventListener("keypress", (event) => {
     if (event.key === "Enter") {
         const city = searchInput.value.trim();
@@ -26,40 +34,35 @@ searchInput.addEventListener("keypress", (event) => {
     }
 });
 
+// ========== FUNCIÓN PRINCIPAL ==========
 async function getWeatherData(city) {
     try {
-        // 1. Obtener Coordenadas
         const geoUrl = `${BASE_URL}/geo/1.0/direct?q=${encodeURIComponent(city)}&limit=1&appid=${API_KEY}`;
         const geoResponse = await fetch(geoUrl);
-        
-        // Si la respuesta del servidor no es correcta (ej: error 401 por API key inválida)
+
         if (!geoResponse.ok) {
             console.error(`Error del servidor: Código ${geoResponse.status}`);
             if (geoResponse.status === 401) {
-                alert("Error 401: Tu API Key no es válida o aún no se ha activado. OpenWeather puede tardar hasta 2 horas en activar cuentas nuevas.");
+                alert("Error 401: Tu API Key no es válida o aún no se ha activado.");
             } else {
-                alert(`Error al conectar con el servidor de mapas (Código ${geoResponse.status})`);
+                alert(`Error al conectar con el servidor (Código ${geoResponse.status})`);
             }
             return;
         }
 
         const geoData = await geoResponse.json();
 
-        // Si la respuesta es exitosa pero la lista viene vacía (ej: ciudad no existe)
         if (!geoData || geoData.length === 0) {
             alert(`No pudimos encontrar la ciudad "${city}". Intenta con otra.`);
             return;
         }
 
-        console.log("¡Éxito! Datos de ubicación recibidos:", geoData[0]);
-
         const { lat, lon, name, country } = geoData[0];
         locationName.textContent = `${name}, ${country}`;
 
-        // 2. Obtener clima, pronóstico y contaminación
         const [currentRes, forecastRes, airRes] = await Promise.all([
-            fetch(`${BASE_URL}/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`).then(r => r.json()),
-            fetch(`${BASE_URL}/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`).then(r => r.json()),
+            fetch(`${BASE_URL}/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&lang=es&appid=${API_KEY}`).then(r => r.json()),
+            fetch(`${BASE_URL}/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&lang=es&appid=${API_KEY}`).then(r => r.json()),
             fetch(`${BASE_URL}/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${API_KEY}`).then(r => r.json())
         ]);
 
@@ -71,8 +74,9 @@ async function getWeatherData(city) {
     }
 }
 
+// ========== ACTUALIZAR TODA LA UI ==========
 function updateUI(current, forecast, air) {
-    // Clima Actual
+    // Clima actual
     tempValue.textContent = Math.round(current.main.temp);
     weatherDescription.textContent = current.weather[0].description;
     mainWeatherIcon.src = `https://openweathermap.org/img/wn/${current.weather[0].icon}@4x.png`;
@@ -82,39 +86,69 @@ function updateUI(current, forecast, air) {
     humidityPercent.textContent = humidity;
     if (humidityBar) humidityBar.style.width = `${humidity}%`;
 
-    // Viento (convertir m/s a km/h)
-    windVal.textContent = Math.round(current.wind.speed * 3.6);
+    // Punto de rocío (se calcula con temp y humedad)
+    const dewPoint = calculateDewPoint(current.main.temp, humidity);
+    if (dewPointEl) dewPointEl.textContent = `Punto de rocío: ${Math.round(dewPoint)}°`;
 
-    // Sol (Amanecer / Atardecer)
+    // Viento (m/s → km/h) + dirección
+    windVal.textContent = Math.round(current.wind.speed * 3.6);
+    if (windDirection) windDirection.textContent = `🧭 ${getWindDirection(current.wind.deg)}`;
+
+    // Probabilidad de lluvia (del pronóstico de hoy a las 12:00)
+    const todayRain = forecast.list.find(item => item.dt_txt.includes("12:00:00"));
+    if (rainPercent && todayRain) rainPercent.textContent = `${Math.round(todayRain.pop * 100)}%`;
+
+    // Sol
     sunriseTime.textContent = formatUnixTime(current.sys.sunrise, current.timezone);
     sunsetTime.textContent = formatUnixTime(current.sys.sunset, current.timezone);
 
-    // Calidad del Aire
+    // Calidad del aire
     const aqi = air.list[0].main.aqi;
     aqiValue.textContent = aqi * 20;
     updateAirQualityCard(aqi);
 
-    // Pronóstico (Filtramos para obtener 1 registro por día, ya que la API gratis da cada 3 horas)
+    // Pronóstico 5 días
     renderForecast(forecast.list);
+
+    // Tarjeta de mañana
+    renderTomorrowCard(forecast.list);
 }
 
+// ========== FORMATEAR HORA DESDE UNIX ==========
 function formatUnixTime(unixTimestamp, timezoneOffset) {
     const date = new Date((unixTimestamp + timezoneOffset) * 1000);
     let hours = date.getUTCHours();
-    const minutes = date.getUTCTimeMinutes ? date.getUTCTimeMinutes().toString().padStart(2, '0') : date.getUTCMinutes().toString().padStart(2, '0');
+    const minutes = date.getUTCMinutes().toString().padStart(2, '0');
     const ampm = hours >= 12 ? 'PM' : 'AM';
     hours = hours % 12 || 12;
     return `${hours}:${minutes} ${ampm}`;
 }
 
+// ========== GRADOS A DIRECCIÓN DEL VIENTE ==========
+function getWindDirection(degrees) {
+    const directions = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE',
+                        'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
+    const index = Math.round(degrees / 22.5) % 16;
+    return directions[index];
+}
+
+// ========== CALCULAR PUNTO DE ROCÍO ==========
+function calculateDewPoint(temp, humidity) {
+    const a = 17.27;
+    const b = 237.7;
+    const alpha = (a * temp) / (b + temp) + Math.log(humidity / 100);
+    return (b * alpha) / (a - alpha);
+}
+
+// ========== TARJETA CALIDAD DEL AIRE ==========
 function updateAirQualityCard(aqi) {
-    const badge = document.querySelector(".badge");
-    const aqiTextHeader = document.querySelector(".aqi-text h4");
-    const aqiTextSub = document.querySelector(".aqi-text p");
+    const badge = document.getElementById("aqi-badge");
+    const aqiTextHeader = document.getElementById("aqi-text-title");
+    const aqiTextSub = document.getElementById("aqi-text-desc");
     const circle = document.querySelector(".aqi-circle");
 
     const aqiLevels = {
-        1: { text: "Bueno", desc: "Bajo riesgo.", class: "badge-healthy", color: "#10b981" },
+        1: { text: "Bueno", desc: "Bajo riesgo para la salud.", class: "badge-healthy", color: "#10b981" },
         2: { text: "Aceptable", desc: "Calidad aceptable.", class: "badge-healthy", color: "#84cc16" },
         3: { text: "Moderado", desc: "Pollución moderada.", class: "badge-warning", color: "#eab308" },
         4: { text: "Malo", desc: "Aire poco saludable.", class: "badge-danger", color: "#f97316" },
@@ -132,17 +166,17 @@ function updateAirQualityCard(aqi) {
     if (circle) circle.style.borderTopColor = level.color;
 }
 
+// ========== PRONÓSTICO 5 DÍAS ==========
 function renderForecast(forecastList) {
     const forecastContainer = document.getElementById("forecast-container");
     if (!forecastContainer) return;
     forecastContainer.innerHTML = "";
 
-    // La API gratuita nos da datos cada 3 horas. Filtramos para tomar solo la de las 12:00 PM de cada día.
     const dailyData = forecastList.filter(item => item.dt_txt.includes("12:00:00"));
 
     dailyData.forEach((day, index) => {
         const date = new Date(day.dt * 1000);
-        const dayName = date.toLocaleDateString('es-CL', { weekday: 'long' }).toUpperCase();
+        const dayName = date.toLocaleDateString('es-CL', { weekday: 'short' }).toUpperCase();
         const iconCode = day.weather[0].icon;
         const tempMax = Math.round(day.main.temp_max);
         const tempMin = Math.round(day.main.temp_min);
@@ -151,7 +185,7 @@ function renderForecast(forecastList) {
         const forecastHTML = `
             <div class="forecast-item ${activeClass}">
                 <span class="day-name">${dayName}</span>
-                <img src="https://openweathermap.org/img/wn/${iconCode}.png" alt="Icon" style="width: 40px; height: 40px;">
+                <img src="https://openweathermap.org/img/wn/${iconCode}.png" alt="Icon" style="width: 65px; height: 65px;">
                 <span class="temp-max">${tempMax}°</span>
                 <span class="temp-min">${tempMin}°</span>
             </div>
@@ -160,5 +194,25 @@ function renderForecast(forecastList) {
     });
 }
 
-// Carga inicial
+// ========== TARJETA DE MAÑANA ==========
+function renderTomorrowCard(forecastList) {
+    if (!tomorrowDay || !tomorrowDesc || !tomorrowTemps || !tomorrowIcon) return;
+
+    const tomorrow = forecastList.find(item => item.dt_txt.includes("12:00:00"));
+
+    if (!tomorrow) return;
+
+    const date = new Date(tomorrow.dt * 1000);
+    const dayName = date.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' });
+    const iconCode = tomorrow.weather[0].icon;
+    const tempMax = Math.round(tomorrow.main.temp_max);
+    const tempMin = Math.round(tomorrow.main.temp_min);
+
+    tomorrowDay.textContent = dayName;
+    tomorrowDesc.textContent = tomorrow.weather[0].description;
+    tomorrowTemps.textContent = `${tempMax}° / ${tempMin}°`;
+    tomorrowIcon.src = `https://openweathermap.org/img/wn/${iconCode}.png`;
+}
+
+// ========== CARGA INICIAL ==========
 getWeatherData("Nacimiento, Cl");

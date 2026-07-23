@@ -36,6 +36,10 @@ body {
     padding: 2rem 1rem;
 }
 
+.app-title{
+    color: #2F76C4;
+}
+
 .dashboard-container {
     width: 100%;
     max-width: 1120px;
@@ -188,7 +192,7 @@ body {
 }
 
 .big-weather-icon {
-    width: 140px;
+    width: 160px;
     height: auto;
 }
 
