@@ -43,7 +43,7 @@ async function getWeatherData(city) {
         if (!geoResponse.ok) {
             console.error(`Error del servidor: Código ${geoResponse.status}`);
             if (geoResponse.status === 401) {
-                alert("Error 401: Tu API Key no es válida o aún no se ha activado.");
+                alert("Error de autenticación. Revisa tu API Key.");
             } else {
                 alert(`Error al conectar con el servidor (Código ${geoResponse.status})`);
             }
