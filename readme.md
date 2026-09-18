@@ -3,6 +3,8 @@
 Dashboard de clima en tiempo real con pronóstico a 5 días,
 calidad del aire, presión atmosférica y más.
 
+> 🔗 **Sitio en vivo:** https://gabboing.github.io/Cielo-Claro/
+
 > Interfaz: HTML + CSS + JavaScript (sin framework).
 > Iconos: Boxicons
 > API: OpenWeatherMap
@@ -48,7 +50,7 @@ calidad del aire, presión atmosférica y más.
 ### Pasos
 1. Clona el repositorio:
    ```bash
-   git clone https://github.com/tu-usuario/cielo-claro.git
+   git clone https://github.com/gabboIng/Cielo-Claro.git
    ```
 2. Abre `index.html` en tu navegador
 
@@ -68,6 +70,7 @@ Opcional: Usa un servidor local (Live Server de VS Code).
    ```
 
 > La key puede tardar hasta 2 horas en activarse.
+> ⚠️ Como el proyecto se publica en GitHub Pages (site estático), la key **siempre será visible** en el código fuente. Usa una key de prueba y vigila su uso.
 
 ---
 
